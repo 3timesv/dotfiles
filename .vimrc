@@ -100,9 +100,10 @@ filetype on
 filetype plugin on
 
 " Map Esc to Capslock
-au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
-
+" au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+" au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+inoremap jj <Esc>
+inoremap <Esc> <Nop>
 " vim-plug
 call plug#begin()
 Plug 'preservim/NERDTree'
