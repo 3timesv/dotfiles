@@ -80,6 +80,9 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 call plug#begin()
 Plug 'preservim/NERDTree'
 Plug 'vimwiki/vimwiki'
+Plug 'davidhalter/jedi-vim'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'python-mode/python-mode', {'for': 'python', 'branch': 'develop'}
 call plug#end()
 " }}}
 
@@ -108,3 +111,8 @@ augroup filetype_vim
 augroup END
 " }}}
 
+" pymode 
+
+let g:pymode_options_colorcolumn = 0
+let g:pymode = 1
+let g:pymode_motion = 1
