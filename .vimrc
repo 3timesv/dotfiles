@@ -1,4 +1,5 @@
 " Options {{{
+"
 " switch from the default Vi-compatibility mode and enables useful Vim functionality. 
 set nocompatible
 
@@ -28,10 +29,22 @@ set smartcase
 
 " Enable searching as you type, rather than waiting till you press enter.
 set incsearch
+
+" vim theme in tmux
+set background=dark
+set t_Co=256
 " }}}
 
 " mapleader 
 let mapleader = "-"
+
+" filetype plugin On for vim-instant-markdown and vimwiki
+filetype plugin on
+
+" tab 4 spaces wide
+set tabstop=4
+set softtabstop=0 noexpandtab
+set shiftwidth=4
 
 " Mappings {{{
 " Edit my vimrc file in vsplit 
@@ -56,12 +69,6 @@ nnoremap H 0
 inoremap jj <esc>
 inoremap <esc> <nop>
 
-" auto-close brackets
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 " }}}
 
 " Try to prevent bad habits like using the arrow keys for movement. {{{
@@ -78,19 +85,31 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 " vim-plug {{{
 call plug#begin()
-Plug 'preservim/NERDTree'
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install'}
 Plug 'vimwiki/vimwiki'
-Plug 'davidhalter/jedi-vim'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'python-mode/python-mode', {'for': 'python', 'branch': 'develop'}
 call plug#end()
 " }}}
 
 " vimwiki defaults {{{
-let g:vimwiki_list = [{
-    \ 'path_html' : '$HOME/Documents/vimwiki/notes_html',
-    \ 'path' : '$HOME/Documents/vimwiki/notes',
-    \}]
+let notes = {}
+let notes.path = '~/vimwiki/notes/'
+let notes.path_html = 'vimwiki/notes_html/'
+let notes.syntax = 'markdown'
+let notes.ext = '.md'
+
+let zettels = {}
+let zettels.path = '~/vimwiki/zettels/'
+let zettels.path_html = '~/vimwiki/zettels_html/'
+let zettels.syntax = 'markdown'
+let zettels.ext = '.md'
+
+let twentyone = {}
+let twentyone.path = '~/vimwiki/twentyone/'
+let twentyone.path_html = '~/vimwiki/twentyone_html/'
+let twentyone.syntax = 'markdown'
+let twentyone.ext = '.md'
+
+let g:vimwiki_list = [notes, zettels, twentyone]
 " }}}
 
 " status line {{{
@@ -98,21 +117,22 @@ set statusline=%f   " Path to the file
 set statusline+=\ %m " Space and -
 set statusline+=\ %y " filetype
 set statusline+=%=  " switch to right
-set statusline+=--%p-- " percentage through file
-set statusline+=%5l  " current line
-set statusline+=/   " separator
-set statusline+=%-5L  " total lines
+set statusline+=%p%% " percentage through file
+set statusline+=\  " separator
+set statusline+=\  " separator
+set statusline+=\  " separator
+set statusline+=%-3l  " current line
 " }}}
 
 " Vimscript file settings {{{
 augroup filetype_vim
     autocmd!
     autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType json :%!jq
 augroup END
 " }}}
 
-" pymode 
+let g:pydocstring_doq_path = "/home/vivek/.local/bin/doq"
+let g:pydocstring_formatter = 'numpy'
+nnoremap <leader>ds :Pydocstring<CR> 
 
-let g:pymode_options_colorcolumn = 0
-let g:pymode = 1
-let g:pymode_motion = 1
