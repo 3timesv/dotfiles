@@ -35,6 +35,7 @@ set background=dark
 set t_Co=256
 " }}}
 
+
 " mapleader 
 let mapleader = "-"
 
@@ -45,6 +46,10 @@ filetype plugin on
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
+
+" highlight search
+set hlsearch
+set incsearch
 
 " Mappings {{{
 " Edit my vimrc file in vsplit 
@@ -87,6 +92,12 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 call plug#begin()
 Plug 'heavenshell/vim-pydocstring', { 'do': 'make install'}
 Plug 'vimwiki/vimwiki'
+Plug 'ron89/thesaurus_query.vim'
+Plug 'reedes/vim-pencil'
+Plug 'dense-analysis/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'lervag/vimtex'
 call plug#end()
 " }}}
 
@@ -113,15 +124,7 @@ let g:vimwiki_list = [notes, zettels, twentyone]
 " }}}
 
 " status line {{{
-set statusline=%f   " Path to the file
-set statusline+=\ %m " Space and -
-set statusline+=\ %y " filetype
-set statusline+=%=  " switch to right
-set statusline+=%p%% " percentage through file
-set statusline+=\  " separator
-set statusline+=\  " separator
-set statusline+=\  " separator
-set statusline+=%-3l  " current line
+let g:airline_theme='minimalist'
 " }}}
 
 " Vimscript file settings {{{
@@ -132,7 +135,36 @@ augroup filetype_vim
 augroup END
 " }}}
 
+" Pydocstring {{{
 let g:pydocstring_doq_path = "/home/vivek/.local/bin/doq"
-let g:pydocstring_formatter = 'numpy'
+let g:pydocstring_formatter = 'google'
 nnoremap <leader>ds :Pydocstring<CR> 
+" }}}
+
+" Ale {{{
+let g:ale_linters_explicit=1
+let g:ale_linters = {
+			\ 'python': ['flake8', 'pylint'],
+			\ }
+let g:ale_fixers = {
+			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements'],
+			\ }
+
+nnoremap <silent> <C-k> :ALEPrevious<CR>
+nnoremap <silent> <C-j> :ALENext<CR> 
+" }}}
+
+" Experiment {{{
+" Match traling whitespaces
+nnoremap <leader>w :match Error /\v\s+$/<CR>
+
+" Clear the match
+nnoremap <leader>W :match none<CR>
+" }}}
+
+" vimtex {{{
+let g:vimtex_compiler_method = 'latexmk'
+let g:vimtex_view_general_viewer = 'okular'
+" }}}
+
 
