@@ -74,6 +74,9 @@ nnoremap H 0
 inoremap jj <esc>
 inoremap <esc> <nop>
 
+" (un)comment python block
+vnoremap <silent> # :s/^/#/<cr>:noh<cr>
+vnoremap <silent> <leader># :s/^#//<cr>:noh<cr>
 " }}}
 
 " Try to prevent bad habits like using the arrow keys for movement. {{{
@@ -90,7 +93,6 @@ inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
 " vim-plug {{{
 call plug#begin()
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install'}
 Plug 'vimwiki/vimwiki'
 Plug 'ron89/thesaurus_query.vim'
 Plug 'reedes/vim-pencil'
@@ -103,20 +105,20 @@ call plug#end()
 
 " vimwiki defaults {{{
 let notes = {}
-let notes.path = '~/vimwiki/notes/'
-let notes.path_html = 'vimwiki/notes_html/'
+let notes.path = '~/me/notes/'
+let notes.path_html = 'me/notes_html/'
 let notes.syntax = 'markdown'
 let notes.ext = '.md'
 
 let zettels = {}
-let zettels.path = '~/vimwiki/zettels/'
-let zettels.path_html = '~/vimwiki/zettels_html/'
+let zettels.path = '~/me/zettels/'
+let zettels.path_html = '~/me/zettels_html/'
 let zettels.syntax = 'markdown'
 let zettels.ext = '.md'
 
 let twentyone = {}
-let twentyone.path = '~/vimwiki/twentyone/'
-let twentyone.path_html = '~/vimwiki/twentyone_html/'
+let twentyone.path = '~/me/twentyone/'
+let twentyone.path_html = '~/me/twentyone_html/'
 let twentyone.syntax = 'markdown'
 let twentyone.ext = '.md'
 
@@ -135,19 +137,15 @@ augroup filetype_vim
 augroup END
 " }}}
 
-" Pydocstring {{{
-let g:pydocstring_doq_path = "/home/vivek/.local/bin/doq"
-let g:pydocstring_formatter = 'google'
-nnoremap <leader>ds :Pydocstring<CR> 
-" }}}
-
 " Ale {{{
 let g:ale_linters_explicit=1
 let g:ale_linters = {
-			\ 'python': ['flake8', 'pylint'],
+			\ 'python': ['flake8', 'pylint'],      
+			\ 'vimwiki': [],
 			\ }
 let g:ale_fixers = {
-			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements'],
+			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
+			\ 'vimwiki': [],
 			\ }
 
 nnoremap <silent> <C-k> :ALEPrevious<CR>
@@ -165,6 +163,10 @@ nnoremap <leader>W :match none<CR>
 " vimtex {{{
 let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_view_general_viewer = 'okular'
+" }}}
+
+" {{{ Misc.
+au VimLeave * if filereadable("~/dotfiles/.vim/.netrwhist")|call delete("~/dotfiles/.vim/.netrwhist")|endif
 " }}}
 
 
