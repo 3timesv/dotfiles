@@ -1,0 +1,9 @@
+[user]
+	name = 3timesv
+	email = vivek.verma662ha@gmail.com
+[alias]
+	st = status
+	ci = commit
+	cl = clone
+	cfg = config --global
+	co = checkout
