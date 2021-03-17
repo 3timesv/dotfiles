@@ -1,3 +1,6 @@
+" mapleader 
+let mapleader = "-"
+
 " Options {{{
 "
 " switch from the default Vi-compatibility mode and enables useful Vim functionality. 
@@ -33,23 +36,19 @@ set incsearch
 " vim theme in tmux
 set background=dark
 set t_Co=256
-" }}}
-
-
-" mapleader 
-let mapleader = "-"
 
 " filetype plugin On for vim-instant-markdown and vimwiki
 filetype plugin on
 
 " tab 4 spaces wide
 set tabstop=4
-set softtabstop=0 noexpandtab
 set shiftwidth=4
+set expandtab
 
 " highlight search
 set hlsearch
 set incsearch
+" }}}
 
 " Mappings {{{
 " Edit my vimrc file in vsplit 
@@ -96,6 +95,7 @@ call plug#begin()
 Plug 'vimwiki/vimwiki'
 Plug 'ron89/thesaurus_query.vim'
 Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-lexical'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -131,9 +131,9 @@ let g:airline_theme='minimalist'
 
 " Vimscript file settings {{{
 augroup filetype_vim
-    autocmd!
-    autocmd FileType vim setlocal foldmethod=marker
-    autocmd FileType json :%!jq
+     autocmd!
+     autocmd FileType vim setlocal foldmethod=marker
+     autocmd FileType json :%!jq
 augroup END
 " }}}
 
@@ -141,23 +141,20 @@ augroup END
 let g:ale_linters_explicit=1
 let g:ale_linters = {
 			\ 'python': ['flake8', 'pylint'],      
-			\ 'vimwiki': [],
+			\ 'vimwiki': ['alex'],
+			\ 'sh': ['shellcheck'],
 			\ }
 let g:ale_fixers = {
 			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
-			\ 'vimwiki': [],
+			\ 'vimwiki': ['remove_trailing_lines', 'trim_whitespace'],
+			\ 'tex': ['latexindent', 'trim_whitespace', 'remove_trailing_lines'],
+            \ 'json': ['fixjson', 'jq', 'prettier']
 			\ }
+
+let g:ale_completion_enabled = 1
 
 nnoremap <silent> <C-k> :ALEPrevious<CR>
 nnoremap <silent> <C-j> :ALENext<CR> 
-" }}}
-
-" Experiment {{{
-" Match traling whitespaces
-nnoremap <leader>w :match Error /\v\s+$/<CR>
-
-" Clear the match
-nnoremap <leader>W :match none<CR>
 " }}}
 
 " vimtex {{{
@@ -165,8 +162,52 @@ let g:vimtex_compiler_method = 'latexmk'
 let g:vimtex_view_general_viewer = 'okular'
 " }}}
 
-" {{{ Misc.
-au VimLeave * if filereadable("~/dotfiles/.vim/.netrwhist")|call delete("~/dotfiles/.vim/.netrwhist")|endif
-" }}}
+" vim-pencil {{{
+
+let g:pencil#wrapModeDefault = 'soft'
+let g:airline_section_x = '%{PencilMode()}'
+
+augroup pencil
+	autocmd!
+	autocmd FileType vimwiki call pencil#init()
+				\ | call lexical#init()
+augroup END
+" }}} 
+
+" Experiment {{{
+" Toggle foldcolumn
+nnoremap <leader>f :call <SID>FoldColumnToggle()<cr>
+
+function! s:FoldColumnToggle()
+	if &foldcolumn
+		setlocal foldcolumn=0
+	else
+		setlocal foldcolumn=4
+	endif
+	echom &foldcolumn
+endfunction
+
+" Toggle other things
+
+nnoremap <leader>q :call <SID>QuickfixToggle()<cr>
+
+let g:quickfix_is_open = 0
+
+function! s:QuickfixToggle()
+	if g:quickfix_is_open
+		cclose
+		let g:quickfix_is_open = 0
+		execute g:quickfix_return_to_window . "wincmd w"
+	else
+		let g:quickfix_return_to_window = winnr()
+		copen
+		let g:quickfix_is_open = 1
+	endif
+endfunction
+
+" tmux window name 
+autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
+
+
 
 

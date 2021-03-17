@@ -7,3 +7,10 @@
 	cl = clone
 	cfg = config --global
 	co = checkout
+	graph = log --all --graph --decorate --oneline
+[color]
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+	grep = auto
