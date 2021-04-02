@@ -76,6 +76,9 @@ inoremap <esc> <nop>
 " (un)comment python block
 vnoremap <silent> # :s/^/#/<cr>:noh<cr>
 vnoremap <silent> <leader># :s/^#//<cr>:noh<cr>
+
+" ALE mappings
+nnoremap <leader>f :ALEFix<cr>
 " }}}
 
 " Try to prevent bad habits like using the arrow keys for movement. {{{
@@ -143,12 +146,14 @@ let g:ale_linters = {
 			\ 'python': ['flake8', 'pylint'],      
 			\ 'vimwiki': ['alex'],
 			\ 'sh': ['shellcheck'],
+            \ 'cpp': ['clangtidy'],
 			\ }
 let g:ale_fixers = {
 			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
 			\ 'vimwiki': ['remove_trailing_lines', 'trim_whitespace'],
 			\ 'tex': ['latexindent', 'trim_whitespace', 'remove_trailing_lines'],
-            \ 'json': ['fixjson', 'jq', 'prettier']
+            \ 'json': ['fixjson', 'jq', 'prettier'],
+            \ 'cpp' : ['clangtidy' ,'astyle', 'remove_trailing_lines', 'trim_whitespace']
 			\ }
 
 let g:ale_completion_enabled = 1
@@ -175,39 +180,6 @@ augroup END
 " }}} 
 
 " Experiment {{{
-" Toggle foldcolumn
-nnoremap <leader>f :call <SID>FoldColumnToggle()<cr>
-
-function! s:FoldColumnToggle()
-	if &foldcolumn
-		setlocal foldcolumn=0
-	else
-		setlocal foldcolumn=4
-	endif
-	echom &foldcolumn
-endfunction
-
-" Toggle other things
-
-nnoremap <leader>q :call <SID>QuickfixToggle()<cr>
-
-let g:quickfix_is_open = 0
-
-function! s:QuickfixToggle()
-	if g:quickfix_is_open
-		cclose
-		let g:quickfix_is_open = 0
-		execute g:quickfix_return_to_window . "wincmd w"
-	else
-		let g:quickfix_return_to_window = winnr()
-		copen
-		let g:quickfix_is_open = 1
-	endif
-endfunction
-
-" tmux window name 
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%"))
-
 
 
 
