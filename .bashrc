@@ -132,3 +132,17 @@ else
 fi
 unset __conda_setup
 
+# experiment >>>>
+
+compile() {
+    g++ -std=c++14 -O2 -Wall $1 -o $(echo $1 | cut -f 1 -d '.')
+}
+
+run() {
+    compile $1
+    ./$(echo $1 | cut -f 1 -d '.')
+}
+    
+
+
+
