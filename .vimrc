@@ -180,6 +180,13 @@ augroup END
 " }}} 
 
 " Experiment {{{
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<ESC>o}<ESC>ko
+""inoremap {;<CR> {<CR>};<ESC>0
 
 
 
