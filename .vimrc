@@ -18,6 +18,9 @@ set number
 " relativenumber enabled
 set relativenumber
 
+" colorscheme
+colorscheme gruvbox
+
 " Always show the status line at the bottom, even if you only have one window open.
 set laststatus=2
 
@@ -73,9 +76,16 @@ nnoremap H 0
 inoremap jj <esc>
 inoremap <esc> <nop>
 
-" (un)comment python block
-vnoremap <silent> # :s/^/#/<cr>:noh<cr>
-vnoremap <silent> <leader># :s/^#//<cr>:noh<cr>
+" (un)comment python block and c++ block
+augroup filetype_block_comment
+    autocmd FileType python vnoremap <silent> # :s/^/#/<cr>:noh<cr>
+    autocmd FileType python vnoremap <silent> <leader># :s/^#//<cr>:noh<cr>
+    autocmd FileType cpp vnoremap <silent> # :s/^/\/\//<cr>:noh<cr>
+    autocmd FileType cpp vnoremap <silent> <leader># :s/^\/\///<cr>:noh<cr>
+    autocmd FileType java vnoremap <silent> # :s/^/\/\//<cr>:noh<cr>
+    autocmd FileType java vnoremap <silent> <leader># :s/^\/\///<cr>:noh<cr>
+augroup END
+
 
 " ALE mappings
 nnoremap <leader>f :ALEFix<cr>
@@ -103,6 +113,8 @@ Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
+Plug 'morhetz/gruvbox'
+Plug 'github/copilot.vim'
 call plug#end()
 " }}}
 
@@ -113,19 +125,19 @@ let notes.path_html = 'me/notes_html/'
 let notes.syntax = 'markdown'
 let notes.ext = '.md'
 
-let zettels = {}
-let zettels.path = '~/me/zettels/'
-let zettels.path_html = '~/me/zettels_html/'
-let zettels.syntax = 'markdown'
-let zettels.ext = '.md'
+let plan = {}
+let plan.path = '~/me/plan/'
+let plan.path_html = '~/me/plan_html/'
+let plan.syntax = 'markdown'
+let plan.ext = '.md'
 
-let twentyone = {}
-let twentyone.path = '~/me/twentyone/'
-let twentyone.path_html = '~/me/twentyone_html/'
-let twentyone.syntax = 'markdown'
-let twentyone.ext = '.md'
+let goal = {}
+let goal.path = '~/me/goal/'
+let goal.path_html = '~/me/goal_html/'
+let goal.syntax = 'markdown'
+let goal.ext = '.md'
 
-let g:vimwiki_list = [notes, zettels, twentyone]
+let g:vimwiki_list = [notes, plan, goal]
 " }}}
 
 " status line {{{
@@ -142,19 +154,24 @@ augroup END
 
 " Ale {{{
 let g:ale_linters_explicit=1
+
 let g:ale_linters = {
-			\ 'python': ['flake8', 'pylint'],      
+			\ 'python': ['flake8', 'pylint', 'mypy'],      
 			\ 'vimwiki': ['alex'],
 			\ 'sh': ['shellcheck'],
             \ 'cpp': ['clangtidy'],
-			\ }
+			\ 'javascript': ['eslint']
+            \ }
 let g:ale_fixers = {
 			\ 'python': ['autopep8', 'add_blank_lines_for_python_control_statements', 'isort', 'remove_trailing_lines', 'trim_whitespace'],
 			\ 'vimwiki': ['remove_trailing_lines', 'trim_whitespace'],
 			\ 'tex': ['latexindent', 'trim_whitespace', 'remove_trailing_lines'],
             \ 'json': ['fixjson', 'jq', 'prettier'],
-            \ 'cpp' : ['clangtidy' ,'astyle', 'remove_trailing_lines', 'trim_whitespace']
-			\ }
+            \ 'c' : ['clangtidy', 'astyle'],
+            \ 'cs' : ['uncrustify','remove_trailing_lines', 'trim_whitespace'],
+            \ 'cpp' : ['clangtidy' ,'astyle', 'remove_trailing_lines', 'trim_whitespace'],
+			\ 'javascript': ['eslint']
+            \ }
 
 let g:ale_completion_enabled = 1
 
@@ -188,5 +205,6 @@ inoremap { {}<left>
 inoremap {<CR> {<ESC>o}<ESC>ko
 ""inoremap {;<CR> {<CR>};<ESC>0
 
+set foldmethod=syntax
 
 

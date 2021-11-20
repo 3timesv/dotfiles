@@ -150,3 +150,4 @@ run() {
 
 
 
+PATH=/home/vvv/miniconda3/bin:/home/vvv/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/jdk1.8.0_281/bin:/home/vvv/Software/scilab-6.1.0/bin
