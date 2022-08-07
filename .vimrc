@@ -84,6 +84,8 @@ augroup filetype_block_comment
     autocmd FileType cpp vnoremap <silent> <leader># :s/^\/\///<cr>:noh<cr>
     autocmd FileType java vnoremap <silent> # :s/^/\/\//<cr>:noh<cr>
     autocmd FileType java vnoremap <silent> <leader># :s/^\/\///<cr>:noh<cr>
+    autocmd FileType c vnoremap <silent> # :s/^/\/\//<cr>:noh<cr>
+    autocmd FileType c vnoremap <silent> <leader># :s/^\/\///<cr>:noh<cr>
 augroup END
 
 
@@ -115,6 +117,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
 Plug 'morhetz/gruvbox'
 Plug 'github/copilot.vim'
+Plug 'dylon/vim-antlr'
 call plug#end()
 " }}}
 
@@ -125,19 +128,14 @@ let notes.path_html = 'me/notes_html/'
 let notes.syntax = 'markdown'
 let notes.ext = '.md'
 
-let plan = {}
-let plan.path = '~/me/plan/'
-let plan.path_html = '~/me/plan_html/'
-let plan.syntax = 'markdown'
-let plan.ext = '.md'
+let plans = {}
+let plans.path = '~/me/plans/'
+let plans.path_html = '~/me/plans_html/'
+let plans.syntax = 'markdown'
+let plans.ext = '.md'
 
-let goal = {}
-let goal.path = '~/me/goal/'
-let goal.path_html = '~/me/goal_html/'
-let goal.syntax = 'markdown'
-let goal.ext = '.md'
 
-let g:vimwiki_list = [notes, plan, goal]
+let g:vimwiki_list = [notes, plans]
 " }}}
 
 " status line {{{
